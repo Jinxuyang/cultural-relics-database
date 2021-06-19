@@ -60,19 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
 
     /**
-     * 自动登录配置
-     */
-    /*@Autowired
-    private DataSource dataSource;
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        jdbcTokenRepository.setCreateTableOnStartup(true);
-        return jdbcTokenRepository;
-    }*/
-
-    /**
      * 自定义数据库查寻认证
      * @param auth
      * @throws Exception
@@ -101,14 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
-/*  @Bean
-    UserNameAndJsonFilter loginFilter() {
-        UserNameAndJsonFilter userNameAndJsonFilter = new UserNameAndJsonFilter();
-        userNameAndJsonFilter.setFilterProcessesUrl("/user/login");
-        userNameAndJsonFilter.setAuthenticationSuccessHandler(customizeAuthenticationSuccessHandler);
-        userNameAndJsonFilter.setAuthenticationFailureHandler(customizeAuthenticationFailureHandler);
-        return userNameAndJsonFilter;
-    }*/
+
     /**
      * 配置登录
      * @param http
@@ -118,8 +98,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();//开启跨域以及关闭防护
-
-//      http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class) //注册自定义登录方式过滤器
 
         http.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntryPoint); //更改未登录或者登录过期默认跳转
         //
