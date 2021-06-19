@@ -11,14 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
-
 
 /**
  * @Author Zero
@@ -106,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //放行路径
         http.authorizeRequests() //验证请求
-            .antMatchers("/user/login").permitAll()//允许所有用户访问这个路径
+            .antMatchers("/user/login","/api/v1/user/register").permitAll()//允许所有用户访问这个路径
             .antMatchers("/usr/add").hasAnyAuthority("admin")
             //.anyRequest().authenticated();
             .anyRequest().permitAll();
