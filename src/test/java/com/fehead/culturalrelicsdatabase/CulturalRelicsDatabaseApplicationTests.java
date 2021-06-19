@@ -1,11 +1,13 @@
 package com.fehead.culturalrelicsdatabase;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 class CulturalRelicsDatabaseApplicationTests {
@@ -22,7 +24,8 @@ class CulturalRelicsDatabaseApplicationTests {
     private MongoTemplate mongoTemplate;
 
     @Test
-    void tes() {
+    void test() {
+
         System.out.println(mongoTemplate.collectionExists("cultural_relics"));
     }
 }

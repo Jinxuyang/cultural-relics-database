@@ -108,7 +108,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests() //验证请求
             .antMatchers("/user/login").permitAll()//允许所有用户访问这个路径
             .antMatchers("/usr/add").hasAnyAuthority("admin")
-            .anyRequest().authenticated();
+            //.anyRequest().authenticated();
+            .anyRequest().permitAll();
         //退出登录
         http.logout()
             //.permitAll() //允许所有用户操作
