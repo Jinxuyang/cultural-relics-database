@@ -15,10 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-//    @GetMapping("/login")
-//    public CommonReturnType login(@RequestParam("username")String username,
-//                                  @RequestParam("password")String password) {
-//
-//        return CommonReturnType.success("null");
-//    }
 }
