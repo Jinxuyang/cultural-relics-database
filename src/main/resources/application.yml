@@ -13,4 +13,4 @@ spring:
     password: ${serve.redispassword}
     port: 6380
   profiles:
-    active: dev
+    active: com

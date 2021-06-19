@@ -1,5 +1,6 @@
 package com.fehead.culturalrelicsdatabase.config.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fehead.culturalrelicsdatabase.utils.MongoDBClient;
 import com.mongodb.Mongo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,15 @@ public class MyDetailService implements UserDetailsService {
         final Query query = new Query();
         query.addCriteria(Criteria.where("username").is(username));
         com.fehead.culturalrelicsdatabase.entity.User user = mongoTemplate.findOne(query, com.fehead.culturalrelicsdatabase.entity.User.class, "user");
-
-        System.out.println(user);
         //这里通过查找获取权限
-        List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+        final Query query1 = new Query();
+        query1.addCriteria(Criteria.where("username").is(username));
+        query1.fields().include("role");
+        query1.fields().exclude("_id");
+        String auth = mongoTemplate.findOne(query1, String.class, "user");
+        auth = "ROLE_" + auth.substring(10, auth.lastIndexOf("\""));
 
-        return new User(user.getUsername(),new BCryptPasswordEncoder().encode(user.getPassword()),auths);
+        List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(auth);
+        return new User(user.getUsername(),user.getPassword(),auths);
     }
 }

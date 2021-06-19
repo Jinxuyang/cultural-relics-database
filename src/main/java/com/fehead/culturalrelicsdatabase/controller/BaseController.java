@@ -7,6 +7,8 @@ import com.fehead.culturalrelicsdatabase.core.response.CommonReturnType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,6 +23,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -56,9 +59,11 @@ public class BaseController {
         }  else if (exception instanceof DataAccessException) { //数据库连接错误
             responseData.put(EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorMsg(),EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorMsg());
         } else if (exception instanceof HttpMessageNotReadableException) { // 序列化异常
-
             responseData.put(EmBusinessError.JSON_SEQUENCE_WRONG.getErrorMsg(),EmBusinessError.JSON_SEQUENCE_WRONG.getErrorMsg());
-        }else {
+        }else if(exception instanceof AccessDeniedException){
+            AccessDeniedException accessDeniedException = (AccessDeniedException) exception;
+            responseData.put(accessDeniedException.getCause().toString(),accessDeniedException.getMessage());
+        } else {
             responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrorCode());
             responseData.put("errMsg",EmBusinessError.UNKNOWN_ERROR.getErrorMsg());
         }

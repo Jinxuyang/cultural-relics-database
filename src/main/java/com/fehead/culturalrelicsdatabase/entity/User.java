@@ -36,6 +36,6 @@ public class User implements Serializable {
 
     private Date updateTime;
     @Field("role")
-    private String[] roles;
+    private String role;
 
 }

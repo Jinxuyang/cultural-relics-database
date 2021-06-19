@@ -9,4 +9,5 @@ import com.fehead.culturalrelicsdatabase.entity.User;
  **/
 public interface UserService {
     User obtainUser(String username,String password);
+    User obtainAdmin(String username,String password);
 }
