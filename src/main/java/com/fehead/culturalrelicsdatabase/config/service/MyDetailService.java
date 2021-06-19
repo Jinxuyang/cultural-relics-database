@@ -40,6 +40,7 @@ public class MyDetailService implements UserDetailsService {
         final Query query = new Query();
         query.addCriteria(Criteria.where("username").is(username));
         com.fehead.culturalrelicsdatabase.entity.User user = mongoTemplate.findOne(query, com.fehead.culturalrelicsdatabase.entity.User.class, "user");
+
         System.out.println(user);
         //这里通过查找获取权限
         List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
