@@ -18,7 +18,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @Since 1.8
  **/
 @Configuration
-//@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig {
     //固定模板
     @Autowired
@@ -47,30 +46,6 @@ public class RedisConfig {
         return template;
     }
 
-//    @Bean //此处有bug没有解决，疑似反序列化出现问题
-//    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-//
-//        // 使用 FastJsonRedisSerializer 来序列化和反序列化redis 的 value的值
-//        FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<>(Object.class);
-//        ParserConfig.getGlobalInstance().addAccept("com.muzz");
-//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-//        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
-//        serializer.setFastJsonConfig(fastJsonConfig);
-//        return serializer;
-//    }
 
-//    @Bean
-//    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-//
-//        // 使用 FastJsonRedisSerializer 来序列化和反序列化 redis 的 value的值
-//        FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<>(Object.class);
-//        ParserConfig.getGlobalInstance().addAccept("com.muzz.");
-//        ParserConfig.getGlobalInstance().addAccept("org.springframework.");
-//        ParserConfig.getGlobalInstance().addAccept("org.springframework.security.core.context.");
-//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-//        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
-//        serializer.setFastJsonConfig(fastJsonConfig);
-//        return new GenericFastJsonRedisSerializer();
-//    }
 
 }

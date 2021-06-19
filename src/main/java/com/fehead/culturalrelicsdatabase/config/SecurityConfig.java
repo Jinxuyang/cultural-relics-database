@@ -41,11 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomizeSessionInformationExpiredStrategy customizeSessionInformationExpiredStrategy;
 
     //自定义用户登录方式过滤器
-//    @Autowired
-//    private UserNameAndJsonFilter userNameAndJsonFilter;
+    /*@Autowired
+    private UserNameAndJsonFilter userNameAndJsonFilter;*/
 
     //登录成功处理器
-//    @Autowired
+    @Autowired
     private CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
 
     //登录失败处理器
@@ -59,18 +59,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
 
-//    /**
-//     * 自动登录配置
-//     */
-//    @Autowired
-//    private DataSource dataSource;
-//    @Bean
-//    public PersistentTokenRepository persistentTokenRepository() {
-//        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-//        jdbcTokenRepository.setDataSource(dataSource);
-////        jdbcTokenRepository.setCreateTableOnStartup(true);
-//        return jdbcTokenRepository;
-//    }
+    /**
+     * 自动登录配置
+     */
+    /*@Autowired
+    private DataSource dataSource;
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        jdbcTokenRepository.setCreateTableOnStartup(true);
+        return jdbcTokenRepository;
+    }*/
 
     /**
      * 自定义数据库查寻认证
@@ -101,14 +101,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
-//    @Bean
-//    UserNameAndJsonFilter loginFilter() {
-//        UserNameAndJsonFilter userNameAndJsonFilter = new UserNameAndJsonFilter();
-//        userNameAndJsonFilter.setFilterProcessesUrl("/user/login");
-//        userNameAndJsonFilter.setAuthenticationSuccessHandler(customizeAuthenticationSuccessHandler);
-//        userNameAndJsonFilter.setAuthenticationFailureHandler(customizeAuthenticationFailureHandler);
-//        return userNameAndJsonFilter;
-//    }
+/*  @Bean
+    UserNameAndJsonFilter loginFilter() {
+        UserNameAndJsonFilter userNameAndJsonFilter = new UserNameAndJsonFilter();
+        userNameAndJsonFilter.setFilterProcessesUrl("/user/login");
+        userNameAndJsonFilter.setAuthenticationSuccessHandler(customizeAuthenticationSuccessHandler);
+        userNameAndJsonFilter.setAuthenticationFailureHandler(customizeAuthenticationFailureHandler);
+        return userNameAndJsonFilter;
+    }*/
     /**
      * 配置登录
      * @param http
@@ -117,9 +117,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors(); //开启跨域以及关闭防护
-//        http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class) //注册自定义登录方式过滤器
-            http.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntryPoint); //更改未登录或者登录过期默认跳转
+        http.csrf().disable().cors();//开启跨域以及关闭防护
+
+//      http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class) //注册自定义登录方式过滤器
+
+        http.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntryPoint); //更改未登录或者登录过期默认跳转
         //
         http.formLogin()
             .loginProcessingUrl("/user/login");
@@ -130,22 +132,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/usr/add").hasAnyAuthority("admin")
             .anyRequest().authenticated();
         //退出登录
-        //http.authorizeRequests().antMatchers("/logout").permitAll();
         http.logout()
-                /*.permitAll()*/ //允许所有用户操作
-                .logoutUrl("/logout").logoutSuccessUrl("/test/hello").deleteCookies("JSESSIONID") //登出陈宫删除cookies
-//                .logoutSuccessHandler(customizeLogoutSuccessHandler) //登出成功逻辑处理
+            //.permitAll() //允许所有用户操作
+            .logoutUrl("/logout").logoutSuccessUrl("/test/hello").deleteCookies("JSESSIONID") //登出陈宫删除cookies
+            .logoutSuccessHandler(customizeLogoutSuccessHandler) //登出成功逻辑处理
             .and().formLogin()
-                /*.permitAll()*/ //允许所有用户操作
-//                .successHandler(customizeAuthenticationSuccessHandler) //登录成功逻辑处理
-//                .failureHandler(customizeAuthenticationFailureHandler) //登录失败逻辑处理
-                .and().exceptionHandling()
-                .accessDeniedHandler(customizeAccessDeniedHandler) //权限拒绝逻辑处理
-                .authenticationEntryPoint(customizeAuthenticationEntryPoint) //匿名访问无权限访问资源异常处理
+            /*.permitAll()*/ //允许所有用户操作
+            .successHandler(customizeAuthenticationSuccessHandler) //登录成功逻辑处理
+            .failureHandler(customizeAuthenticationFailureHandler) //登录失败逻辑处理
+            .and()
+            .exceptionHandling()
+            .accessDeniedHandler(customizeAccessDeniedHandler) //权限拒绝逻辑处理
+            .authenticationEntryPoint(customizeAuthenticationEntryPoint) //匿名访问无权限访问资源异常处理
             //会话管理
             .and().sessionManagement()
-                .maximumSessions(1) //同一个用户最大的登录数量
-                .expiredSessionStrategy(customizeSessionInformationExpiredStrategy); //异地登录（会话失效）处理逻辑
+            .maximumSessions(1) //同一个用户最大的登录数量
+            .expiredSessionStrategy(customizeSessionInformationExpiredStrategy); //异地登录（会话失效）处理逻辑
 
     }
 }
