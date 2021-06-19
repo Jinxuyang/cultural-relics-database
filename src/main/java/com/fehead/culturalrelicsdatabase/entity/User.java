@@ -8,7 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Author Zero
@@ -24,9 +26,16 @@ public class User implements Serializable {
     @Id
     private String id;
     @Field("username") //指定属性名对应文档中的属性名
+    @NotBlank(message = "用户名不能为空")
     private String username;
     @Field("pwd")
+    @NotBlank(message = "密码不能为空")
     private String password;
 
-    private String role;
+    private Date createTime;
+
+    private Date updateTime;
+    @Field("role")
+    private String[] roles;
+
 }

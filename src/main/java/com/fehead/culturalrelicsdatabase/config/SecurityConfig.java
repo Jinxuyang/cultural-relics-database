@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
 
-
-
 /**
  * @Author Zero
  * @Date 2021/6/3 23:06
@@ -102,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //放行路径
         http.authorizeRequests() //验证请求
-            .antMatchers("/user/login").permitAll()//允许所有用户访问这个路径
+            .antMatchers("/user/login","/api/v1/user/register").permitAll()//允许所有用户访问这个路径
             .antMatchers("/usr/add").hasAnyAuthority("admin")
             .anyRequest().authenticated();
         //退出登录
