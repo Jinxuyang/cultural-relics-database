@@ -7,9 +7,9 @@ package com.fehead.culturalrelicsdatabase.core.error;
  * @Version 1.0
  */
 public interface CommonError {
-    public int getErrorCode();
+    int getErrorCode();
 
-    public String getErrorMsg();
+    String getErrorMsg();
 
-    public CommonError setErrMsg(String errMsg);
+    CommonError setErrMsg(String errMsg);
 }
