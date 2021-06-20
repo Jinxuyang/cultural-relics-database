@@ -1,16 +1,5 @@
 server:
   port: 8889
 spring:
-  data:
-    mongodb:
-      database: cultural_relics
-      host: ${serve.host}
-      password: ${serve.password}
-      port: 27017
-      username: root
-  redis:
-    host: ${serve.host}
-    password: ${serve.redispassword}
-    port: 6380
   profiles:
     active: dev

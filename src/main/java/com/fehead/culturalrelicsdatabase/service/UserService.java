@@ -1,6 +1,7 @@
 package com.fehead.culturalrelicsdatabase.service;
 
 import com.fehead.culturalrelicsdatabase.entity.User;
+import com.mongodb.client.result.UpdateResult;
 
 /**
  * @Author Zero
@@ -8,6 +9,7 @@ import com.fehead.culturalrelicsdatabase.entity.User;
  * @Since 1.8
  **/
 public interface UserService {
-    User obtainUser(String username,String password);
-    User obtainAdmin(String username,String password);
+    User register(String username,String password);
+
+    UpdateResult privilegeEscalation(String id);
 }

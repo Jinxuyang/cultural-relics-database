@@ -23,13 +23,13 @@ public class DocServiceImpl implements DocService {
 
     @Override
     public List<Relic> getDocsByIds(List<String> ids) {
-        return mongoTemplate.find(new Query(Criteria.where("_id").in(ids)),Relic.class);
+        return mongoTemplate.find(new Query(Criteria.where("_id").in(ids)),Relic.class,"relic");
     }
 
     @Override
     public boolean saveRelics(List<Relic> list) {
         for (Relic relic : list) {
-            mongoTemplate.save(relic);
+            mongoTemplate.save(relic,"relic");
         }
         return true;
     }
