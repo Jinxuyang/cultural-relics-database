@@ -3,7 +3,10 @@ package com.fehead.culturalrelicsdatabase.controller;
 
 import com.fehead.culturalrelicsdatabase.core.error.BusinessException;
 import com.fehead.culturalrelicsdatabase.core.error.EmBusinessError;
+import com.fehead.culturalrelicsdatabase.core.error.ErrorMsgType;
 import com.fehead.culturalrelicsdatabase.core.response.CommonReturnType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -33,40 +36,41 @@ import java.util.Set;
  */
 @RestControllerAdvice
 public class BaseController {
+    protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    public static final String CONTENT_TYPE_FORMED="application/x-www-form-urlencoded";
-
-    @ExceptionHandler(Exception.class) //异常处理器（处理异常的范围）
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST) //会返回一个状态码
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Object handlerException( Exception exception){
-        Map<String,Object> responseData = new HashMap<>();
-        if(exception instanceof BusinessException) { //自定义义务逻辑异常
-            BusinessException businessException = (BusinessException) exception;
-            responseData.put("errCode",businessException.getErrorCode());
-            responseData.put("errMsg",businessException.getErrorMsg());
-        } else if(exception instanceof MethodArgumentNotValidException){ //参数校验异常
-            MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) exception;
-            BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
-            bindingResult.getFieldErrors().forEach(fieldError -> responseData.put(fieldError.getField(),fieldError.getDefaultMessage()));
-        } else if(exception instanceof ConstraintViolationException) { //自定义校验异常
-            ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception;
-            Set<ConstraintViolation<?>> constraintViolations = constraintViolationException.getConstraintViolations();
-            for (ConstraintViolation<?> item: constraintViolations
-                 ) {
-                responseData.put(item.getPropertyPath().toString(), item.getMessage());
-            }
-        }  else if (exception instanceof DataAccessException) { //数据库连接错误
-            responseData.put(EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorMsg(),EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorMsg());
-        } else if (exception instanceof HttpMessageNotReadableException) { // 序列化异常
-            responseData.put(EmBusinessError.JSON_SEQUENCE_WRONG.getErrorMsg(),EmBusinessError.JSON_SEQUENCE_WRONG.getErrorMsg());
-        }else if(exception instanceof AccessDeniedException){
-            AccessDeniedException accessDeniedException = (AccessDeniedException) exception;
-            responseData.put(accessDeniedException.getCause().toString(),accessDeniedException.getMessage());
+    public Object handlerException(Exception ex) {
+        ErrorMsgType responseData ;
+        if (ex instanceof BusinessException) {
+            BusinessException businessException = (BusinessException) ex;
+            responseData = packErrorCommonReturnType(businessException.getErrorCode()
+                    , businessException.getErrorMsg());
+        } else if (ex instanceof DataAccessException) { //数据库连接错误
+            logger.error(ex.getMessage());
+            responseData = packErrorCommonReturnType(EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorCode()
+                    , EmBusinessError.DATARESOURCE_CONNECT_FAILURE.getErrorMsg());
+        } else if (ex instanceof HttpMessageNotReadableException) { // 序列化异常
+            logger.error(ex.getMessage());
+            responseData = packErrorCommonReturnType(EmBusinessError.JSON_SEQUENCE_WRONG.getErrorCode()
+                    , EmBusinessError.JSON_SEQUENCE_WRONG.getErrorMsg());
+        } else if (ex instanceof MethodArgumentNotValidException) { // 参数校验异常
+            logger.error(ex.getMessage());
+            Map<String,Object> map = new HashMap<>();
+            ((MethodArgumentNotValidException) ex).getBindingResult().getFieldErrors().forEach(fieldError -> map.put(fieldError.getField(),fieldError.getDefaultMessage()));
+            responseData = packErrorCommonReturnType(EmBusinessError.PARAMETER_VALIDATION_ERROR.getErrorCode()
+                    , map.toString());
         } else {
-            responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrorCode());
-            responseData.put("errMsg",EmBusinessError.UNKNOWN_ERROR.getErrorMsg());
+            logger.error(ex.getMessage());
+            responseData = packErrorCommonReturnType(EmBusinessError.UNKNOWN_ERROR.getErrorCode()
+                    , ex.getMessage());
         }
-        return CommonReturnType.fail(responseData);
+        logger.error("{"+responseData.toString()+"}");
+        return CommonReturnType.create(responseData, "fail");
+    }
+
+    protected ErrorMsgType packErrorCommonReturnType(int errorCode, String errorMsg){
+        return new ErrorMsgType(errorCode,errorMsg);
     }
 }

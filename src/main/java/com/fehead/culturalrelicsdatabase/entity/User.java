@@ -18,4 +18,8 @@ public class User {
     private String password;
 
     private List<String> roles;
+
+    private long createTime;
+
+    private long updateTime;
 }

@@ -5,6 +5,7 @@ import com.fehead.culturalrelicsdatabase.core.response.CommonReturnType;
 import com.fehead.culturalrelicsdatabase.entity.Relic;
 import com.fehead.culturalrelicsdatabase.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/doc")
-public class DocController {
+public class DocController extends BaseController{
     @Autowired
     private DocService docService;
 
@@ -29,6 +30,7 @@ public class DocController {
     private ObjectMapper objectMapper;
 
     @GetMapping
+    @Secured({"ROLE_admin","ROLE_user"})
     public void export(HttpServletResponse response, @RequestParam List<String> ids) throws IOException {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition","attachment;filename=test.json");
@@ -42,6 +44,7 @@ public class DocController {
     }
 
     @PostMapping
+    @Secured({"ROLE_admin"})
     public CommonReturnType import_(@RequestParam MultipartFile file) throws IOException {
         Relic[] relics = objectMapper.readValue(file.getInputStream(),Relic[].class);
         List<Relic> list = Arrays.asList(relics);

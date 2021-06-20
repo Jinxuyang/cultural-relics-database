@@ -2,6 +2,7 @@ package com.fehead.culturalrelicsdatabase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fehead.culturalrelicsdatabase.entity.Relic;
+import com.fehead.culturalrelicsdatabase.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,13 +41,13 @@ public class TestMongoDB {
     }
     @Test
     public void save() {
-        Relic relic = new Relic();
-        relic.setDescription("测试");
-        relic.setName("测试");
-        relic.setUnit("测试");
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("$2a$10$weMxpp68heA/v6NFruHpB.u2xSPKCgbr205hhctN7E596tq64mlhq");
+        user.setRoles(Arrays.asList("user","admin"));
 
+        System.out.println(template.save(user));
 
-        System.out.println(template.save(relic));
     }
 
     /*@Test

@@ -2,10 +2,18 @@ package com.fehead.culturalrelicsdatabase.service.impl;
 
 import com.fehead.culturalrelicsdatabase.entity.User;
 import com.fehead.culturalrelicsdatabase.service.UserService;
+import com.mongodb.client.result.UpdateResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @Author Zero
@@ -14,25 +22,30 @@ import java.util.Date;
  **/
 @Service
 public class UserServiceImpl implements UserService {
-    User user = new User();
-    @Override
-    public User obtainUser(String username, String password) {
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-        user.setUsername(username);
-        user.setPassword(new BCryptPasswordEncoder().encode(password));
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        user.setRole("user");
-        return user;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    public UpdateResult privilegeEscalation(String id) {
+        List<String> roles = Arrays.asList("user","admin");
+
+        return mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(id)), Update.update("roles", roles), "user");
     }
 
     @Override
-    public User obtainAdmin(String username, String password) {
+    public User register(String username, String password) {
+
+        User user = new User();
         user.setUsername(username);
-        user.setPassword(new BCryptPasswordEncoder().encode(password));
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        user.setRole("admin");
-        return user;
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setCreateTime(System.currentTimeMillis());
+        user.setUpdateTime(System.currentTimeMillis());
+        user.setRoles(Collections.singletonList("user"));
+
+        return mongoTemplate.save(user,"user");
+
     }
 }

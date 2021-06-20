@@ -3,6 +3,8 @@ package com.fehead.culturalrelicsdatabase.config.service;
 import com.fehead.culturalrelicsdatabase.entity.User;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  * @Date 2021/6/20 13:24
  * @Version 1.0
  */
+@Configuration
 public class MyUserDetailService implements UserDetailsService {
     @Autowired
     private MongoTemplate mongoTemplate;

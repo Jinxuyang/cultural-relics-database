@@ -9,9 +9,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 @EnableRedisHttpSession
 public class CulturalRelicsDatabaseApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(CulturalRelicsDatabaseApplication.class, args);
     }
-
 }
