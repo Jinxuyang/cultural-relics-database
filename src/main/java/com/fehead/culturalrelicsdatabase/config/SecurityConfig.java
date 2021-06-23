@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //退出登录
         http.logout()
-                .logoutUrl("/logout").deleteCookies("JSESSIONID") //登出陈宫删除cookies
+                .logoutUrl("/logout").deleteCookies("JSESSIONID") //登出成功删除cookies
                 .logoutSuccessHandler(customizeLogoutSuccessHandler) //登出成功逻辑处理
 
                 .and()
