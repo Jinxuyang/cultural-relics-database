@@ -39,8 +39,8 @@ public class RelicController {
      */
     @GetMapping
     @Secured({"ROLE_user"})
-    public CommonReturnType searchRelic(@RequestParam @NotBlank(message = "查询名称不能为空") String name,
-                                        @RequestParam  @NotNull(message = "page参数缺失") Integer page,
+    public CommonReturnType searchRelic(@RequestParam String name,
+                                        @RequestParam @NotNull(message = "page参数缺失") Integer page,
                                         @RequestParam @NotNull(message = "size参数缺失") Integer size) {
         Query query = new Query(Criteria.where("name").regex(name));
         query.skip((page - 1) * size).limit(size);

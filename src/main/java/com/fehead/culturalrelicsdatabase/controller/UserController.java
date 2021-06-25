@@ -81,7 +81,7 @@ public class UserController extends BaseController {
      */
     @GetMapping
     @Secured({"ROLE_admin"})
-    public CommonReturnType searchUser(@RequestParam @NotBlank(message = "name不能为空") String name,
+    public CommonReturnType searchUser(@RequestParam String name,
                                        @RequestParam @NotNull(message = "page参数缺失") Integer page,
                                        @RequestParam @NotNull(message = "size参数缺失") Integer size) {
         Query query = new Query(Criteria.where("username").regex(name));
