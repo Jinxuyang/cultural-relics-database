@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class DocController extends BaseController{
     @Secured({"ROLE_admin","ROLE_user"})
     public void export(HttpServletResponse response, @RequestParam List<String> ids) throws IOException {
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition","attachment;filename=test.json");
+        response.setHeader("Content-Disposition","attachment;filename="+System.currentTimeMillis()+".json");
 
         List<Relic> list = docService.getDocsByIds(ids);
 

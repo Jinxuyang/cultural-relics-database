@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Relic {
+    private String id;
+
     private String unearthNumber;
 
     private String testNumber;

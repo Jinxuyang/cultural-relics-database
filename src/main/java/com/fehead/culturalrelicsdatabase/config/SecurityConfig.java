@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().anyRequest().permitAll();
         http.csrf().disable().cors();//开启跨域以及关闭防护
 
         http.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntryPoint); //更改未登录或者登录过期默认跳转
@@ -83,14 +84,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .loginProcessingUrl("/api/v1/user/login");
 
         //放行路径
-        http.authorizeRequests() //验证请求
-                .antMatchers("/api/v1/user/login","/api/v1/user/register").permitAll()
-                .anyRequest().authenticated();
-                //.anyRequest().permitAll();
+        /*http.authorizeRequests() //验证请求
+                .antMatchers("/api/v1/user/login","/api/v1/user/register","/**").permitAll()
+                //.anyRequest().authenticated();
+                .anyRequest().permitAll();*/
 
         //退出登录
         http.logout()
-                .logoutUrl("/logout").deleteCookies("JSESSIONID") //登出成功删除cookies
+                .logoutUrl("/api/v1/logout").deleteCookies("JSESSIONID") //登出成功删除cookies
                 .logoutSuccessHandler(customizeLogoutSuccessHandler) //登出成功逻辑处理
 
                 .and()

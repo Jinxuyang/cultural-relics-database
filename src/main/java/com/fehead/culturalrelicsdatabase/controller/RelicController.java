@@ -34,15 +34,21 @@ public class RelicController {
         this.mongoTemplate = mongoTemplate;
     }
 
+    @GetMapping("/detail")
+    public CommonReturnType getDetail(@RequestParam String id){
+        System.out.println(mongoTemplate.findById(id,Relic.class));
+       return CommonReturnType.success(mongoTemplate.findById(id,Relic.class));
+    }
     /**
      * 查询 分页
      */
     @GetMapping
     @Secured({"ROLE_user"})
-    public CommonReturnType searchRelic(@RequestParam String name,
-                                        @RequestParam @NotNull(message = "page参数缺失") Integer page,
+    public CommonReturnType searchRelic(@RequestParam(required = false) String keyword,
+                                        @RequestParam@NotNull(message = "page参数缺失") Integer page,
                                         @RequestParam @NotNull(message = "size参数缺失") Integer size) {
-        Query query = new Query(Criteria.where("name").regex(name));
+        if (keyword == null) keyword = "";
+        Query query = new Query(Criteria.where("name").regex(keyword));
         query.skip((page - 1) * size).limit(size);
         return CommonReturnType.success(mongoTemplate.find(query, Relic.class), "查询结果");
     }

@@ -42,10 +42,9 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @PostMapping
-    public CommonReturnType register(@RequestParam("username") @NotBlank(message = "用户名不能为空") String username,
-                                     @RequestParam("password") @NotBlank(message = "密码不能为空") String password) throws BusinessException {
+    public CommonReturnType register(@RequestBody User userinfo) throws BusinessException {
 
-        User user = userService.register(username, password);
+        User user = userService.register(userinfo.getUsername(), userinfo.getPassword());
 
         if (user == null) {
             throw new BusinessException(EmBusinessError.PRIMARY_ERROR, "注册失败");
@@ -54,9 +53,9 @@ public class UserController extends BaseController {
         return CommonReturnType.success("注册成功");
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Secured({"ROLE_admin"})
-    public CommonReturnType privilegeEscalation(@RequestParam @NotBlank(message = "ID不能为空") String id) throws BusinessException {
+    public CommonReturnType privilegeEscalation(@PathVariable String id) throws BusinessException {
         UpdateResult result = userService.privilegeEscalation(id);
 
         if (!result.wasAcknowledged()) {
@@ -81,10 +80,11 @@ public class UserController extends BaseController {
      */
     @GetMapping
     @Secured({"ROLE_admin"})
-    public CommonReturnType searchUser(@RequestParam String name,
+    public CommonReturnType searchUser(@RequestParam(required = false) String keyword,
                                        @RequestParam @NotNull(message = "page参数缺失") Integer page,
                                        @RequestParam @NotNull(message = "size参数缺失") Integer size) {
-        Query query = new Query(Criteria.where("username").regex(name));
+        if (keyword == null) keyword = "";
+        Query query = new Query(Criteria.where("username").regex(keyword));
         query.skip((page - 1) * size).limit(size);
 //        Field fields = query.fields();
 //        fields.include("username");

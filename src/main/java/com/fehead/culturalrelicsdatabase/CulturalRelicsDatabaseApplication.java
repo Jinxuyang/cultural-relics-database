@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 @EnableRedisHttpSession
 public class CulturalRelicsDatabaseApplication {
     public static void main(String[] args) {
