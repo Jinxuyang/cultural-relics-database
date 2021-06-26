@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Verge
@@ -50,7 +53,11 @@ public class RelicController {
         if (keyword == null) keyword = "";
         Query query = new Query(Criteria.where("name").regex(keyword));
         query.skip((page - 1) * size).limit(size);
-        return CommonReturnType.success(mongoTemplate.find(query, Relic.class), "查询结果");
+        List<Relic> list = mongoTemplate.find(query, Relic.class);
+        Map<String,Object> map = new HashMap<>(2);
+        map.put("list",list);
+        map.put("total",mongoTemplate.count(new Query(),"relic"));
+        return CommonReturnType.success(map, "查询结果");
     }
 
 }
