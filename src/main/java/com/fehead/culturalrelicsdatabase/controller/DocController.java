@@ -1,19 +1,19 @@
 package com.fehead.culturalrelicsdatabase.controller;
 
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fehead.culturalrelicsdatabase.core.response.CommonReturnType;
 import com.fehead.culturalrelicsdatabase.entity.Relic;
 import com.fehead.culturalrelicsdatabase.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,16 +30,21 @@ public class DocController extends BaseController{
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private SymmetricCrypto symmetricCrypto;
+
     @GetMapping
     @Secured({"ROLE_admin","ROLE_user"})
     public void export(HttpServletResponse response, @RequestParam List<String> ids) throws IOException {
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition","attachment;filename="+System.currentTimeMillis()+".json");
+        response.setHeader("Content-Disposition","attachment;filename="+System.currentTimeMillis()+".relics");
 
         List<Relic> list = docService.getDocsByIds(ids);
 
+        String doc = objectMapper.writeValueAsString(list);
+
         OutputStream outputStream = response.getOutputStream();
-        objectMapper.writeValue(outputStream,list);
+        objectMapper.writeValue(outputStream, symmetricCrypto.encryptBase64(doc));
 
         outputStream.close();
     }
@@ -47,7 +52,10 @@ public class DocController extends BaseController{
     @PostMapping
     @Secured({"ROLE_admin"})
     public CommonReturnType import_(@RequestParam MultipartFile file) throws IOException {
-        Relic[] relics = objectMapper.readValue(file.getInputStream(),Relic[].class);
+        String doc = objectMapper.readValue(file.getInputStream(),String.class);
+        System.out.println();
+
+        Relic[] relics = objectMapper.readValue(symmetricCrypto.decrypt(doc),Relic[].class);
         List<Relic> list = Arrays.asList(relics);
         docService.saveRelics(list);
 
