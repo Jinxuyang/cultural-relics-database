@@ -23,10 +23,10 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MongoTemplate mongoTemplate;
 
     @Override
     public UpdateResult privilegeEscalation(String id) {
@@ -36,11 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(String username, String password) {
+    public User register(String username, String rawPassword) {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setPassword(bCryptPasswordEncoder.encode(rawPassword));
         user.setCreateTime(System.currentTimeMillis());
         user.setUpdateTime(System.currentTimeMillis());
         user.setRoles(Collections.singletonList("user"));
