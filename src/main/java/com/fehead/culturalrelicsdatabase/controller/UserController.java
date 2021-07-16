@@ -1,22 +1,17 @@
 package com.fehead.culturalrelicsdatabase.controller;
 
-import com.fehead.culturalrelicsdatabase.BO.UserBO;
+import com.fehead.culturalrelicsdatabase.controller.viewobject.UserVo;
 import com.fehead.culturalrelicsdatabase.core.error.BusinessException;
-import com.fehead.culturalrelicsdatabase.core.error.CommonError;
 import com.fehead.culturalrelicsdatabase.core.error.EmBusinessError;
 import com.fehead.culturalrelicsdatabase.core.response.CommonReturnType;
-import com.fehead.culturalrelicsdatabase.entity.Relic;
 import com.fehead.culturalrelicsdatabase.entity.User;
 import com.fehead.culturalrelicsdatabase.service.UserService;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +87,7 @@ public class UserController extends BaseController {
 //        fields.include("username");
 //        fields.include("_id");
         Map<String,Object> map = new HashMap<>(2);
-        List<UserBO> list = mongoTemplate.find(query, UserBO.class,"user");
+        List<UserVo> list = mongoTemplate.find(query, UserVo.class,"user");
         map.put("total",mongoTemplate.count(new Query(),"user"));
         map.put("list",list);
         return CommonReturnType.success(map, "查询结果");

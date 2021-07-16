@@ -1,4 +1,4 @@
-package com.fehead.culturalrelicsdatabase.BO;
+package com.fehead.culturalrelicsdatabase.controller.viewobject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserBO {
+public class UserVo {
     private String id;
 
     private String username;

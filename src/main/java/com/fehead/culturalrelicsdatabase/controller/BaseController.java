@@ -38,9 +38,9 @@ import java.util.Set;
 public class BaseController {
     protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    //@ExceptionHandler(Exception.class)
-    //@ResponseStatus(HttpStatus.OK)
-    //@ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public Object handlerException(Exception ex) {
         ErrorMsgType responseData ;
         if (ex instanceof BusinessException) {
