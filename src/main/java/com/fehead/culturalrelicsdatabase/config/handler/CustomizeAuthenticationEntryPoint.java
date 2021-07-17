@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Author: Hutengfei
+ * @Author: Zero
  * @Description: 匿名用户访问无权限资源时的异常
  * @Date Create in 2019/9/3 21:35
  */
