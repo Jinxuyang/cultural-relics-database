@@ -55,8 +55,10 @@ public enum EmBusinessError implements CommonError {
     FEHEAD_CA_CERTIFICATE_GENERATOR_FAIL(90004,"证书生成失败"),
 
     SERVICE_AUTHENTICATION_ILLEGAL(90005,"用户认证凭据不合法"),
-    SERVICE_AUTHENTICATION_INVALID(90006,"用户认证凭据无效");
-
+    SERVICE_AUTHENTICATION_INVALID(90006,"用户认证凭据无效"),
+    INVALID_CLAIM(90007,"无效的声明"),
+    PREMATURE_JWT(90008,"jwt过早"),
+    SIGNATURE_ERROR(90009,"秘钥错误");
     private EmBusinessError(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
