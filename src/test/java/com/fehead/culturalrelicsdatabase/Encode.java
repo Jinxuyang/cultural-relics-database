@@ -3,9 +3,7 @@ package com.fehead.culturalrelicsdatabase;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import com.fehead.culturalrelicsdatabase.utils.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
-import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
 import org.junit.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.UpperCase;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author Verge
