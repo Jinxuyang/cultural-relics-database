@@ -46,12 +46,12 @@ public class RelicController {
      * 查询 分页
      */
     @GetMapping
-    @Secured({"ROLE_user"})
+    //@Secured({"ROLE_user"})
     public CommonReturnType searchRelic(@RequestParam(required = false) String keyword,
                                         @RequestParam@NotNull(message = "page参数缺失") Integer page,
                                         @RequestParam @NotNull(message = "size参数缺失") Integer size) {
         if (keyword == null) keyword = "";
-        Query query = new Query(Criteria.where("name").regex(keyword));
+        Query query = new Query(Criteria.where("essentialInformation.Name").regex(keyword));
         query.skip((page - 1) * size).limit(size);
         List<Relic> list = mongoTemplate.find(query, Relic.class);
         Map<String,Object> map = new HashMap<>(2);

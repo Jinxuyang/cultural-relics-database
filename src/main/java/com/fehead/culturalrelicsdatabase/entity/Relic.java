@@ -16,20 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Relic {
     private String id;
-
-    private String unearthNumber;
-
-    private String testNumber;
-
-    private String unearthPlace;
-
-    private String age;
-
-    private String times;
-
-    private String name;
-
-    private List<CeramicElement> testResult;
-
-
+    private ChemicalComposition chemicalComposition;
+    private EssentialInformation essentialInformation;
 }

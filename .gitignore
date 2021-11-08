@@ -35,3 +35,7 @@ build/
 application-dev.yml
 application-prop.yml
 application-com.yml
+
+mvnw
+mvnw.cmd
+.mvn

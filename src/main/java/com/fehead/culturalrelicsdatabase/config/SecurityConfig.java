@@ -85,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //放行路径
         /*http.authorizeRequests() //验证请求
-                .antMatchers("/api/v1/user/login","/api/v1/user/register","/**").permitAll()
+                //.antMatchers("/api/v1/user/login","/api/v1/user/register","/**").permitAll()
                 //.anyRequest().authenticated();
                 .anyRequest().permitAll();*/
 
