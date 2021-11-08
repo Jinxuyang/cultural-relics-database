@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Author: Hutengfei
+ * @Author: Zero
  * @Description: 会话信息过期策略
  * @Date Create in 2019/9/4 9:34
  */
