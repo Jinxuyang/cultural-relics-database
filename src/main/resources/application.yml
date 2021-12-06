@@ -1,5 +1,12 @@
+
 server:
   port: 8889
 spring:
   profiles:
     active: dev
+  application:
+    name: cultural-relics-database
+arros:
+  plugin:
+    enable: true
+    server: http://v55ytw.natappfree.cc
